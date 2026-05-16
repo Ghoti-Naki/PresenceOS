@@ -4,14 +4,15 @@ import { FaGithub } from "react-icons/fa";
 import TagBadge from "@/components/shared/TagBadge";
 
 export interface Project {
-  id: number;
+  id: string;
+  slug: string;
   title: string;
   description: string;
-  image_url?: string | null;
-  github_url?: string | null;
-  live_url?: string | null;
+  imageUrl?: string | null;
+  githubUrl?: string | null;
+  liveUrl?: string | null;
   tags: string[];
-  is_featured: boolean;
+  isFeatured: boolean;
 }
 
 interface ProjectCardProps {
@@ -22,12 +23,17 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   return (
     <article className="group flex flex-col rounded-xl border border-border bg-card overflow-hidden transition-shadow duration-200 hover:shadow-md">
       <div className="h-44 bg-muted border-b border-border flex items-center justify-center text-xs text-muted-foreground">
-        {project.image_url ?? project.title}
+        {project.imageUrl ?? project.title}
       </div>
 
       <div className="flex flex-col flex-1 p-5">
         <h3 className="font-semibold text-base text-foreground mb-2">
-          {project.title}
+          <Link
+            href={`/projects/${project.slug}`}
+            className="hover:underline underline-offset-2"
+          >
+            {project.title}
+          </Link>
         </h3>
         <p className="text-sm text-muted-foreground leading-relaxed flex-1 mb-4">
           {project.description}
@@ -39,10 +45,10 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           ))}
         </div>
 
-        <div className="flex gap-4 mt-auto">
-          {project.github_url && project.github_url !== "#" ? (
+        <div className="flex gap-4 mt-auto items-center">
+          {project.githubUrl && project.githubUrl !== "#" ? (
             <Link
-              href={project.github_url}
+              href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -56,9 +62,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               Code
             </span>
           )}
-          {project.live_url && project.live_url !== "#" && (
+          {project.liveUrl && project.liveUrl !== "#" && (
             <Link
-              href={project.live_url}
+              href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
@@ -67,6 +73,12 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               Live
             </Link>
           )}
+          <Link
+            href={`/projects/${project.slug}`}
+            className="ml-auto text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Details →
+          </Link>
         </div>
       </div>
     </article>
